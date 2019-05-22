@@ -1,0 +1,13 @@
+__history/
+*.csspjt
+*.cof
+*.err
+*.esym
+*.hex
+*.lst
+*.STA
+*.sym
+*.tre
+*.xsym
+*.h
+*.ccspjt
