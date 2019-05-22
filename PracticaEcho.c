@@ -14,29 +14,35 @@
    #use fast_io(c)
 #endif
 
-int flagSerial=1;
+int flagSerial=1,indiceBuffRX=0;
 char caracter;
-int contador_buffer=0;
-char buffer[30]={""};
+
+#define MAX_SIZE_BUFFRX 30
+char buffRX[MAX_SIZE_BUFFRX];
+
 
 #INT_RDA
 void isr_RDA(void){
+   buffRX[indiceBuffRX]=getc();
+   indiceBuffRX++;
    flagSerial=1;
    caracter=getc();
-   //buffer[contador_buffer]=caracter;
-   //contador_buffer+=1;
+   if(indiceBuffRX>MAX_SIZE_BUFFRX){
+      indiceBuffRX=0;
+   }
+   
 }
 
 void main (void){
    
    set_tris_c(0x80);
-   enable_interrupts(GLOBAL);
-   enable_interrupts(INT_RDA);
+   enable_interrupts(GLOBAL | INT_RDA);
    while(1){
       if(flagSerial==1){
          putc(caracter);
-         printf("%c",caracter+1);
-      
+         printf("Caracter %c, Valor %u, Hexa %x",caracter+1,caracter+1,caracter+1);
+         flagSerial=0;//limpiando la bandera
+         
       }
    }
    
