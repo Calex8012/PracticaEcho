@@ -1,4 +1,6 @@
 #include <18F4620.h>
+#include <stdlib.h>
+
 #fuses HS, NOFCMEN, NOIESO, PUT, NOBROWNOUT, NOWDT
 #fuses NOPBADEN, NOMCLR, STVREN, NOLVP, NODEBUG
 #use delay(clock=16000000)
@@ -21,13 +23,21 @@ char buffer[30]={""};
 void isr_RDA(void){
    flagSerial=1;
    caracter=getc();
-   buffer[contador_buffer]=caracter;
-   contador_buffer+=1;
+   //buffer[contador_buffer]=caracter;
+   //contador_buffer+=1;
 }
 
 void main (void){
-   while(TRUE){
-      set_tris_c(0x80);
-      putc(caracter);
+   
+   set_tris_c(0x80);
+   enable_interrupts(GLOBAL);
+   enable_interrupts(INT_RDA);
+   while(1){
+      if(flagSerial==1){
+         putc(caracter);
+         printf("%c",caracter+1);
+      
+      }
    }
+   
 }
