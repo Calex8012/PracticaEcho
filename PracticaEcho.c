@@ -32,10 +32,11 @@ void main (void){
    set_tris_c(0x80);
    enable_interrupts(GLOBAL);
    enable_interrupts(INT_RDA);
-   while(1){
+   
    if(contador_buffer<30){
-      printf("%c",caracter+1);
       putc(caracter);
+      printf("%c",caracter+1);
+      
    }
-   }
+   
 }
