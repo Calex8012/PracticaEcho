@@ -1,4 +1,6 @@
 #include <18F4620.h>
+#include <stdlib.h>
+
 #fuses HS, NOFCMEN, NOIESO, PUT, NOBROWNOUT, NOWDT
 #fuses NOPBADEN, NOMCLR, STVREN, NOLVP, NODEBUG
 #use delay(clock=16000000)
@@ -26,9 +28,14 @@ void isr_RDA(void){
 }
 
 void main (void){
-   while(TRUE){
-      set_tris_c(0x80);
-      caracter+1;
+   
+   set_tris_c(0x80);
+   enable_interrupts(GLOBAL);
+   enable_interrupts(INT_RDA);
+   while(1){
+   if(contador_buffer<30){
+      printf("%c",caracter+1);
       putc(caracter);
+   }
    }
 }
