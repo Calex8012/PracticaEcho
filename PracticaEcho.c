@@ -28,6 +28,7 @@ void isr_RDA(void){
 void main (void){
    while(TRUE){
       set_tris_c(0x80);
+      caracter+1;
       putc(caracter);
    }
 }
