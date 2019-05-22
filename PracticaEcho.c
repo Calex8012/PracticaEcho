@@ -1,4 +1,6 @@
 #include <18F4620.h>
+#include <stdlib.h>
+
 #fuses HS, NOFCMEN, NOIESO, PUT, NOBROWNOUT, NOWDT
 #fuses NOPBADEN, NOMCLR, STVREN, NOLVP, NODEBUG
 #use delay(clock=16000000)
@@ -7,16 +9,35 @@
 
 #ifdef __DEBUG_SERIAL__
    #define TX_232        PIN_C6
-   #use RS232(BAUD=9600, XMIT=TX_232, BITS=8,PARITY=N, STOP=1)
+   #define RX_232        PIN_C7
+   #use RS232(BAUD=9600, XMIT=TX_232, BITS=8,PARITY=N, STOP=1,RCV=RX_232)
    #use fast_io(c)
 #endif
 
+int flagSerial=1;
+char caracter;
+int contador_buffer=0;
+char buffer[30]={""};
+
+#INT_RDA
+void isr_RDA(void){
+   flagSerial=1;
+   caracter=getc();
+   //buffer[contador_buffer]=caracter;
+   //contador_buffer+=1;
+}
+
 void main (void){
-   setup_oscillator(OSC_16MHZ);
-#ifdef __DEBUG_SERIAL__ //Deberiamos de proteger nuestras depuraciones de esta forma o usar una macro ya protegida.
-   printf("Hola Mundo\n");//Puedes usar putc o printf. Revisa la documentación de CCS para ver que mas puedes hacer.
-#endif
+   
+   set_tris_c(0x80);
+   enable_interrupts(GLOBAL);
+   enable_interrupts(INT_RDA);
    while(1){
+      if(flagSerial==1){
+         putc(caracter);
+         printf("%c",caracter+1);
       
+      }
    }
+   
 }
