@@ -14,7 +14,7 @@
    #use fast_io(c)
 #endif
 
-int flagSerial=1,indiceBuffRX=0;
+int flagSerial=0,indiceBuffRX=0;
 char caracter;
 
 #define MAX_SIZE_BUFFRX 30
@@ -36,14 +36,20 @@ void isr_RDA(void){
 void main (void){
    
    set_tris_c(0x80);
-   enable_interrupts(GLOBAL | INT_RDA);
+   enable_interrupts(GLOBAL);
+   enable_interrupts(INT_RDA);
    while(1){
       if(flagSerial==1){
-         putc(caracter);
-         printf("Caracter %c, Valor %u, Hexa %x",caracter+1,caracter+1,caracter+1);
+         for(int8 indiceRecorridoBuffRX=0;indiceRecorridoBuffRX<indiceBuffRX;indiceRecorridoBuffRX++){
+            printf("%c",(buffRX[indiceRecorridoBuffRX]));
+            putc(caracter);
+         }
+
+         //printf("Caracter %c, Valor %u, Hexa %x",caracter+1,caracter+1,caracter+1);
          flagSerial=0;//limpiando la bandera
-         
       }
+         
    }
-   
 }
+   
+
