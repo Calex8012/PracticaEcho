@@ -26,7 +26,6 @@ void isr_RDA(void){
    buffRX[indiceBuffRX]=getc();
    indiceBuffRX++;
    flagSerial=1;
-   caracter=getc();
    if(indiceBuffRX>MAX_SIZE_BUFFRX){
       indiceBuffRX=0;
    }
@@ -42,7 +41,8 @@ void main (void){
       if(flagSerial==1){
          for(int8 indiceRecorridoBuffRX=0;indiceRecorridoBuffRX<indiceBuffRX;indiceRecorridoBuffRX++){
             printf("%c",(buffRX[indiceRecorridoBuffRX]));
-            putc(caracter);
+            printf("\r");
+            //putc(caracter);
          }
 
          //printf("Caracter %c, Valor %u, Hexa %x",caracter+1,caracter+1,caracter+1);
