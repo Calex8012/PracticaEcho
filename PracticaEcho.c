@@ -40,12 +40,8 @@ void main (void){
    while(1){
       if(flagSerial==1){
          for(int8 indiceRecorridoBuffRX=0;indiceRecorridoBuffRX<indiceBuffRX;indiceRecorridoBuffRX++){
-            printf("%c",(buffRX[indiceRecorridoBuffRX]));
-            printf("\r");
-            //putc(caracter);
+            printf("%c \n",(buffRX[indiceRecorridoBuffRX]));   
          }
-
-         //printf("Caracter %c, Valor %u, Hexa %x",caracter+1,caracter+1,caracter+1);
          flagSerial=0;//limpiando la bandera
       }
          
